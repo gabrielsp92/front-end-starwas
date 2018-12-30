@@ -96,11 +96,16 @@ export default {
                         password: this.formCustom.passwd
                       };
                         //send request to server with user data.
-                        axios.defaults.headers.common['x-auth'] = response.headers['x-auth'];
-                        axios.post(`http://localhost:3000/user`, user)
+                        //axios.defaults.headers.common['x-auth'] = response.headers['x-auth'];
+                        axios.post(`http://localhost:3000/user`, user,{
+                            headers: {
+                                'x-auth': localStorage.token
+                            }
+                        })
                         .then((response) => {
                           if(response.status == 200){
                             //this.$Message.success('Success!');
+                            this.$parent.loggedIn++;
                             this.$router.push('/');
 
                             //setting local storage variables
@@ -109,7 +114,7 @@ export default {
                             localStorage.setItem('email',response.data.email);
                             localStorage.setItem('id',response.data._id);
 
-                            axios.defaults.headers.common['x-auth'] = response.headers['x-auth'];
+                            //axios.defaults.headers.common['x-auth'] = response.headers['x-auth'];
 
                           }else if(response.status == 401){
                               console.log(response.body);

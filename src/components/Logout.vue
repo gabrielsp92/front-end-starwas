@@ -15,7 +15,6 @@ export default {
     }
   },
   created(){
-      console.log(localStorage);
       if(localStorage.token != undefined){
       //update nav :key to react and reload.
       this.$parent.loggedIn--;
@@ -23,18 +22,22 @@ export default {
       this.$router.push('/');
 
         axios.defaults.headers.common['x-auth'] = localStorage.token;
-          axios.delete(`http://localhost:3000/user/me/token`,'',{'x-auth': localStorage.getItem('token')})   
-                        .then((response) => {
-                          if(response.status == 200){
-                            this.$Message.success('Logged out!');
+          axios.delete(`http://localhost:3000/user/me/token`,{
+            headers: {
+              'x-auth': localStorage.token
+            }
+          })   
+          .then((response) => {
+            if(response.status == 200){
+              his.$Message.success('Logged out!');
 
-                          }else if(response.status == 200){
-                              this.$Message.error('Error!');
-                          }
-                        })
-                        .catch(e => {
+              }else if(response.status == 200){
+              this.$Message.error('Error!');
+              }
+          })
+          .catch(e => {
       
-                        });
+      });
       }
       
       //Clear Session, 

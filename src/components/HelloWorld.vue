@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2><a id="reloader" href="/"> Home </a> </h2>
+    <h1>{{ title }}</h1>
+    <p>{{msg}}</p>
   </div>
 </template>
 
@@ -10,7 +10,9 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Emiolo'
+      msg: 'Node.js, MongoDB, e Vue.js',
+      author: 'Gabriel Soares',
+      title: 'Starwars wiki App'
     }
   },
   mounted(){

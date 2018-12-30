@@ -74,18 +74,25 @@ export default {
             handleSubmit (name) {
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-
+                      //request model
                       var user = {
                         email: this.formCustom.email,
                         password: this.formCustom.passwd
                       };
+
+                      //cleaning headers
+                      axios.defaults.headers.common = {
+                          Accept: "application/json, text/plain, */*"
+                      }
                         //send request to server with user data.
-                        axios.post(`http://localhost:3000/user/login`, user)
+                        axios.post(`http://localhost:3000/user/login`, user,{
+                            headers: null
+                        })
                         .then((response) => {
                           if(response.status == 200){
                             //this.$Message.success('Success!');
                             this.reloadNav();
-                            this.$router.push('/');
+                            this.$router.push('/planets');
 
                             //setting local storage variables
                             localStorage.setItem('token',response.headers['x-auth']);
@@ -93,25 +100,19 @@ export default {
                             localStorage.setItem('email',response.data.email);
                             localStorage.setItem('id',response.data._id);
 
-                            axios.defaults.headers.common['x-auth'] = response.headers['x-auth'];
-
-                          }else if(response.status == 401){
-                              setTimeout(()=>{
-                                this.$Message.error('Email ou senha invalidos!');
-                              } ,1000)
-                              
                           }
                         })
                         .catch(e => {
-      
+                            this.$Message.error('Email ou senha invalidos!');
+                            this.$refs[name].resetFields();
                         });
                     } else {
-                        this.$Message.error('Fail!');
+                        this.$Message.error('Email ou senha invalidos!');
                     }
                 })
             },
             reloadNav() {
-                this.$parent.loggedIn = 1;
+                this.$parent.loggedIn++;
             },
             handleReset (name) {
                 this.$refs[name].resetFields();

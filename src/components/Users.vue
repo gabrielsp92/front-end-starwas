@@ -1,9 +1,11 @@
 <template>
-  <div>
-    <h1 id="title">{{title}}</h1>
+  <Row>
+    <Col span="16" offset="4">
+      <h1 id="title">{{title}}</h1>
 
     <Table :columns="columns" :data="users"></Table>
-  </div>
+    </Col>
+  </Row>
 </template>
 
 <script>
@@ -44,8 +46,12 @@ export default {
       this.$router.push('/login');
     };
     //retrieve users from server
-    axios.defaults.headers.common['x-auth'] = localStorage.token; 
-      axios.get("http://localhost:3000/user",'',{'x-auth': localStorage.getItem('token')})
+    // axios.defaults.headers.common['x-auth'] = localStorage.token; 
+      axios.get("http://localhost:3000/user",{
+        headers: {
+          'x-auth': localStorage.token
+        }
+      })
       .then(response => {
       if(response.status == 200){
       this.users = response.data.users;
